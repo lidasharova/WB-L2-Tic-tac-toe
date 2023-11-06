@@ -6,8 +6,10 @@ const popup = document.querySelector('.popup');
 const popupMessage = document.querySelector('.popup-message');
 const newGameBtnPopup = document.querySelector('.popup .new-game-btn');
 
+let cells = [];
 let board = ['', '', '', '', '', '', '', '', ''];
 let currentPlayer = 'X';
+let gameFinished = false;
 
 // отрисовка поля
 const renderBoard = () => {
@@ -19,16 +21,6 @@ const renderBoard = () => {
     cellElement.addEventListener('click', () => makeMove(index));
     boardContainer.appendChild(cellElement);
   });
-};
-
-// ф-ция хода
-const makeMove = (index) => {
-  if (!board[index]) {
-    board[index] = currentPlayer;
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    renderBoard();
-    checkWin();
-  }
 };
 
 const showMessage = (text) => {
@@ -47,11 +39,23 @@ const showPopup = (message) => {
 const hidePopup = () => {
   popup.style.display = 'none';
 };
-// сохранение игры в localStorage
-const saveGame = () => {
-  console.log('Сохранили');
-  localStorage.setItem('ticTacToeGame', JSON.stringify(board));
-  showMessage('Game saved!');
+
+// создание конфети и анимация после выигрыша
+const createConfetti = () => {
+  const confetti = document.createElement('div');
+  confetti.classList.add('confetti');
+  confetti.style.left = Math.random() * 100 + '%';
+  confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+  confetti.style.opacity = Math.random();
+  document.body.appendChild(confetti);
+  setTimeout(() => {
+    document.body.removeChild(confetti);
+  }, 2000);
+};
+const playWinAnimation = () => {
+  for (let i = 0; i < 60; i++) {
+    setTimeout(createConfetti, i * 60);
+  }
 };
 
 // ф-ция загрузки игры из localStorage
@@ -61,7 +65,7 @@ const loadGame = () => {
     hidePopup();
     board = JSON.parse(savedGame);
     renderBoard();
-    hideMessage();
+    checkWin();
   } else {
     showPopup('Start a new game!');
     renderBoard();
@@ -71,18 +75,29 @@ const loadGame = () => {
 // загрузка игры из localStorage
 loadGame();
 
-const newGame = () => {
-  hidePopup();
-  board = ['', '', '', '', '', '', '', '', ''];
-  currentPlayer = 'X';
-  renderBoard();
-  hideMessage();
+// сохранение игры в localStorage
+const saveGame = () => {
+  localStorage.setItem('ticTacToeGame', JSON.stringify(board));
+  showMessage('Game saved!');
 };
 
-const cells = document.querySelectorAll('.cell');
+// ф-ции для выделения/очистки выигрышной комбинации
+function highlightWinningCombo(combo) {
+  cells = document.querySelectorAll('.cell');
+  combo.forEach((index) => {
+    cells[index].classList.add('winning');
+  });
+}
+
+function clearWinningCombo() {
+  cells = document.querySelectorAll('.cell');
+  cells.forEach((cell) => {
+    cell.classList.remove('winning');
+  });
+}
 
 // ф-ция для проверки наличия выигрышной комбинации
-const checkWin = () => {
+function checkWin() {
   const winningCombos = [
     // Горизонтальные комбинации
     [0, 1, 2],
@@ -101,30 +116,36 @@ const checkWin = () => {
     if (board[a] && board[a] === board[b] && board[a] === board[c]) {
       highlightWinningCombo(combo);
       showMessage(`The player ${board[a]} - won!`);
+      playWinAnimation();
+      gameFinished = true;
     }
   }
   // проверка на ничью
   if (!board.includes('')) {
     showMessage('Draw!!');
     clearWinningCombo();
+    playWinAnimation();
+    gameFinished = true;
   }
-};
+}
 
-// ф-ция для выделения выигрышной комбинации
-const highlightWinningCombo = (combo) => {
-  console.log('Выигрышная комбинация:', combo);
-  combo.forEach((index) => {
-    console.log(index);
-    console.log(cells[index]);
-    cells[index].classList.add('winning');
-  });
-};
+function makeMove(index) {
+  if (gameFinished) return;
+  if (!board[index]) {
+    board[index] = currentPlayer;
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    renderBoard();
+    checkWin();
+  }
+}
 
-// ф-ция для очистки выигрышной комбинации
-const clearWinningCombo = () => {
-  cells.forEach((cell) => {
-    cell.classList.remove('winning');
-  });
+const newGame = () => {
+  hidePopup();
+  board = ['', '', '', '', '', '', '', '', ''];
+  currentPlayer = 'X';
+  renderBoard();
+  hideMessage();
+  gameFinished = false;
 };
 
 newGameBtns.forEach((btn) => {

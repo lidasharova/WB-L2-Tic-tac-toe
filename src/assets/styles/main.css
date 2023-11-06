@@ -117,6 +117,28 @@ body {
 
 .winning {
   background-color: #ea4f3e;
+  border: 2px solid #f6b0b0;
+}
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background-color: #5ff194;
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  animation-name: confetti-fall;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotateZ(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotateZ(720deg);
+  }
 }
 
 @media (max-width: 500px) {
