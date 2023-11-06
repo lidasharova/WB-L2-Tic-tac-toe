@@ -1,6 +1,6 @@
 ## WB School. Курс «хардкорный JS. L2» (25.10 - 08.11)
 
-### Генератор мемов
+### Игра "Крестики-нолики"
 
 ## [deploy](https://lida-sharova-tic-tac-toe.netlify.app/)
 
