@@ -1,0 +1,134 @@
+body {
+  min-width: 280px;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background-color: #383636;
+  color: aliceblue;
+}
+
+.header {
+  width: 100%;
+  height: 5vh;
+  margin-bottom: 30px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+}
+
+.title {
+  margin: 0;
+  font-size: 40px;
+  text-align: center;
+  color: rgb(95, 179, 227);
+  text-shadow: 2px 2px 4px rgb(113, 113, 226);
+  padding-bottom: 10px;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 15px;
+  text-align: center;
+  color: rgba(129, 192, 229, 0.99);
+  text-shadow: 2px 2px 4px rgb(113, 113, 226);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-gap: 4px;
+  margin: 20px auto;
+  border-color: rgb(85, 0, 255);
+  box-shadow: 0 0 15px rgba(113, 113, 226, 0.5);
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  font-size: 60px;
+  text-align: center;
+  line-height: 100px;
+  border: 2px solid #000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 15px rgba(113, 113, 226, 0.5);
+}
+
+.cell:hover {
+  background-color: #9d9a9a;
+}
+
+.message {
+  font-size: 35px;
+  margin: 20px;
+  color: #bcb7fc;
+  text-shadow: 0 0 15px rgba(113, 113, 226, 0.5);
+}
+
+.popup-message {
+  font-size: 20px;
+  margin: 20px;
+  color: #2d2675;
+}
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.628);
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(248, 248, 248, 0.5);
+  text-align: center;
+}
+
+.new-game-btn,
+.save-game-btn {
+  margin: 15px;
+  padding: 10px 20px;
+  background-color: #2d2675;
+  border: #fff 1px solid;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(248, 248, 248, 0.5);
+}
+.save-game-btn:hover,
+.new-game-btn:hover {
+  background-color: #6252d7;
+}
+
+.winning {
+  background-color: #ea4f3e;
+}
+
+@media (max-width: 500px) {
+  .cell {
+    width: 70px;
+    font-size: 50px;
+    height: 70px;
+    line-height: 70px;
+  }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    grid-gap: 0px;
+  }
+}
